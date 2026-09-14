@@ -1,0 +1,21 @@
+# M3FD Daytime scene split from the WACV 2024 RGBXFusion metadata.
+#
+# This clean directory view removes duplicate rows present in the published
+# text lists while preserving every unique image ID in each scene bucket:
+# train=979, val=214, test=320 aligned RGB/IR pairs.
+# The original local M3FD dataset is not modified; these paths contain
+# symbolic links prepared under M3FD_SceneSplit_WACV2024.
+
+path: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024
+
+train_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/daytime/train/vis
+val_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/daytime/val/vis
+test_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/daytime/test/vis
+
+train_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/daytime/train/Ir
+val_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/daytime/val/Ir
+test_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/daytime/test/Ir
+
+nc: 6
+names: ['People', 'Car', 'Bus', 'Lamp', 'Motorcycle', 'Truck']
+

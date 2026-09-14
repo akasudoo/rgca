@@ -1,0 +1,30 @@
+# Frequency-free RGCA + foreground mask-guided GFB on aligned FLIR.
+# Strict-fair Adam counterpart to hyp.rgca_flir_pretrained.yaml: the model,
+# losses and augmentation stay unchanged; only optimizer-specific values differ.
+lr0: 0.0005
+lrf: 0.1
+momentum: 0.9  # Adam beta1 (beta2 is fixed to 0.999 in train.py)
+weight_decay: 0.0005
+warmup_epochs: 3.0
+warmup_momentum: 0.8  # starting Adam beta1 during warmup
+warmup_bias_lr: 0.005
+box: 0.05
+cls: 0.5
+cls_pw: 1.0
+obj: 1.0
+obj_pw: 1.0
+iou_t: 0.2
+anchor_t: 4.0
+fl_gamma: 0.0
+hsv_h: 0.015
+hsv_s: 0.7
+hsv_v: 0.4
+degrees: 0.0
+translate: 0.1
+scale: 0.5
+shear: 0.0
+perspective: 0.0
+flipud: 0.0
+fliplr: 0.5
+mosaic: 1.0
+mixup: 0.0

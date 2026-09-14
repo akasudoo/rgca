@@ -1,0 +1,20 @@
+# Leakage-free Daytime subsets of the exact M3FD split used to train
+# runs/train/m3fd_rgca_mask_gfb_best.
+#
+# Scene membership comes from the WACV 2024 RGBXFusion metadata, while
+# train/val/test membership remains the original local M3FD 3360/420/420 split.
+# Counts: train=1220, val=157, test=136 paired RGB/IR images.
+
+path: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024
+
+train_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/manifests/original_m3fd_split/daytime_train_vis.txt
+val_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/manifests/original_m3fd_split/daytime_val_vis.txt
+test_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/manifests/original_m3fd_split/daytime_test_vis.txt
+
+train_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/manifests/original_m3fd_split/daytime_train_Ir.txt
+val_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/manifests/original_m3fd_split/daytime_val_Ir.txt
+test_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/manifests/original_m3fd_split/daytime_test_Ir.txt
+
+nc: 6
+names: ['People', 'Car', 'Bus', 'Lamp', 'Motorcycle', 'Truck']
+

@@ -1,0 +1,39 @@
+# Stage-B recovery after RS-RGCA reliability calibration.
+# Load m3fd_rs_rgca_finetune50/weights/best.pt, freeze both backbones and all
+# four RGCA+Mask+GFB blocks, and optimize PAN/Detect for clean-set mAP50 only.
+
+lr0: 0.0001
+lrf: 0.1
+momentum: 0.937
+weight_decay: 0.0005
+warmup_epochs: 0.5
+warmup_momentum: 0.8
+warmup_bias_lr: 0.0001
+
+box: 0.05
+cls: 0.5
+cls_pw: 1.0
+obj: 1.0
+obj_pw: 1.0
+iou_t: 0.2
+anchor_t: 4.0
+fl_gamma: 0.0
+
+# Mild, alignment-preserving augmentation. Mosaic is deliberately disabled:
+# at this converged stage its distribution shift is larger than its benefit.
+hsv_h: 0.005
+hsv_s: 0.25
+hsv_v: 0.15
+degrees: 0.0
+translate: 0.04
+scale: 0.2
+shear: 0.0
+perspective: 0.0
+flipud: 0.0
+fliplr: 0.5
+mosaic: 0.0
+mixup: 0.0
+
+# Audit marker only. RS auxiliary supervision is intentionally absent, so no
+# modality corruption is injected and the frozen calibrated gates cannot drift.
+rgca_map50_recovery: true

@@ -1,0 +1,103 @@
+# C1.5 lightweight RGB-IR detector for M3FD.
+#
+# RGB and IR preserve independent feature extraction through C4 (stride 16).
+# P2/P3/P4 are fused by the existing no-prior RGCA + foreground mask + GFB,
+# then only C5/SPPF is shared. The dense PAN and four-scale Detect head are
+# unchanged, so this isolates the effect of moving the merge point from C3
+# (C1) to C4 without adding a private bypass, auxiliary loss, Mamba, or D3C3.
+
+nc: 6
+depth_multiple: 0.33
+width_multiple: 0.50
+architecture_variant: c1_5_dual_to_c4_shared_c5
+
+# Target layer -> canonical single-stream YOLOv5s backbone stage. Both modal
+# C2/C3/C4 branches receive identical pretrained initialization; C5/SPPF is
+# initialized once because it is shared after P4 fusion.
+pretrained_backbone_map:
+  0: 0
+  1: 1
+  2: 2
+  3: 3
+  4: 4
+  5: 5
+  6: 6
+  7: 0
+  8: 1
+  9: 2
+  10: 3
+  11: 4
+  12: 5
+  13: 6
+  17: 7
+  18: 8
+  19: 9
+
+anchors:
+  - [5,6, 8,14, 15,11]
+  - [10,13, 16,30, 33,23]
+  - [30,61, 62,45, 59,119]
+  - [116,90, 156,198, 373,326]
+
+backbone:
+  # RGB branch through C4.
+  [[-1, 1, Conv, [64, 6, 2, 2]],
+   [-1, 1, Conv, [128, 3, 2]],
+   [-1, 3, C3, [128]],                 # 2: RGB C2 / stride 4
+   [-1, 1, Conv, [256, 3, 2]],
+   [-1, 6, C3, [256]],                 # 4: RGB C3 / stride 8
+   [-1, 1, Conv, [512, 3, 2]],
+   [-1, 9, C3, [512]],                 # 6: RGB C4 / stride 16
+
+   # IR branch through C4. -4 selects the second image input.
+   [-4, 1, Conv, [64, 6, 2, 2]],
+   [-1, 1, Conv, [128, 3, 2]],
+   [-1, 3, C3, [128]],                 # 9: IR C2 / stride 4
+   [-1, 1, Conv, [256, 3, 2]],
+   [-1, 6, C3, [256]],                 # 11: IR C3 / stride 8
+   [-1, 1, Conv, [512, 3, 2]],
+   [-1, 9, C3, [512]],                 # 13: IR C4 / stride 16
+
+   # Fused skips for P2/P3 and the new later C4 merge point at P4.
+   [[2,9], 1, HAFFormerRGCAMaskGFB,
+    [128, 1.0, 2, 1.0, none, 0.5, 0.1, 0.01, legacy_channel]],
+   [[4,11], 1, HAFFormerRGCAMaskGFB,
+    [256, 1.0, 2, 1.0, none, 0.5, 0.1, 0.01, legacy_channel]],
+   [[6,13], 1, HAFFormerRGCAMaskGFB,
+    [512, 1.0, 2, 1.0, none, 0.5, 0.1, 0.01, legacy_channel]],
+
+   # Shared C5/SPPF is computed only once from fused P4.
+   [-1, 1, Conv, [1024, 3, 2]],
+   [-1, 3, C3, [1024]],
+   [-1, 1, SPPF, [1024, 5]],           # 19: shared C5 / stride 32
+  ]
+
+head:
+  [[-1, 1, Conv, [512, 1, 1]],
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+   [[-1, 16], 1, Concat, [1]],         # fused P4 skip
+   [-1, 3, C3, [512, False]],
+
+   [-1, 1, Conv, [512, 1, 1]],
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+   [[-1, 15], 1, Concat, [1]],         # fused P3 skip
+   [-1, 3, C3, [512, False]],
+
+   [-1, 1, Conv, [256, 1, 1]],
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+   [[-1, 14], 1, Concat, [1]],         # fused P2 skip
+   [-1, 3, C3, [256, False]],          # 31: P2 / stride 4
+
+   [-1, 1, Conv, [256, 3, 2]],
+   [[-1, 28], 1, Concat, [1]],
+   [-1, 3, C3, [256, False]],          # 34: P3 / stride 8
+
+   [-1, 1, Conv, [256, 3, 2]],
+   [[-1, 24], 1, Concat, [1]],
+   [-1, 3, C3, [512, False]],          # 37: P4 / stride 16
+
+   [-1, 1, Conv, [512, 3, 2]],
+   [[-1, 20], 1, Concat, [1]],
+   [-1, 3, C3, [1024, False]],         # 40: P5 / stride 32
+
+   [[31, 34, 37, 40], 1, Detect, [nc, anchors]]]

@@ -1,0 +1,29 @@
+# Hyperparameters for fine-tuning from runs/train/exp30/weights/best.pt
+
+lr0: 0.001  # fine-tune initial learning rate, 1/10 of scratch training
+lrf: 0.1  # final cosine LR = lr0 * lrf = 0.0001
+momentum: 0.937  # SGD momentum/Adam beta1
+weight_decay: 0.0005  # optimizer weight decay
+warmup_epochs: 1.0  # shorter warmup for fine-tuning
+warmup_momentum: 0.8  # warmup initial momentum
+warmup_bias_lr: 0.001  # keep bias LR small for stable fine-tuning
+box: 0.05  # box loss gain
+cls: 0.5  # cls loss gain
+cls_pw: 1.0  # cls BCELoss positive_weight
+obj: 1.0  # obj loss gain
+obj_pw: 1.0  # obj BCELoss positive_weight
+iou_t: 0.20  # IoU training threshold
+anchor_t: 4.0  # anchor-multiple threshold
+fl_gamma: 0.0  # focal loss gamma
+hsv_h: 0.015  # image HSV-Hue augmentation
+hsv_s: 0.7  # image HSV-Saturation augmentation
+hsv_v: 0.4  # image HSV-Value augmentation
+degrees: 0.0  # image rotation
+translate: 0.1  # image translation
+scale: 0.5  # image scale
+shear: 0.0  # image shear
+perspective: 0.0  # image perspective
+flipud: 0.0  # image flip up-down
+fliplr: 0.5  # image flip left-right
+mosaic: 1.0  # image mosaic
+mixup: 0.0  # image mixup

@@ -1,0 +1,17 @@
+# M3FD Night scene split from the WACV 2024 RGBXFusion metadata.
+# Unique aligned RGB/IR pairs: train=488, val=108, test=140.
+# The original local M3FD dataset is unchanged; these paths are symbolic links.
+
+path: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024
+
+train_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/night/train/vis
+val_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/night/val/vis
+test_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/night/test/vis
+
+train_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/night/train/Ir
+val_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/night/val/Ir
+test_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/night/test/Ir
+
+nc: 6
+names: ['People', 'Car', 'Bus', 'Lamp', 'Motorcycle', 'Truck']
+

@@ -1,0 +1,40 @@
+# Staged 1024x1024 migration of the trained original LCAFNet_FLIR detector to
+# C0 RGCA. The image size is controlled by train.py/--img-size.
+# Epochs 0--4 train only layers 20--23 (new RGCA/Mask plus remapped GFB).
+# Epochs 5--29 train layers 20--45 (fusion + PAN/FPN + Detect); both modal
+# backbones remain frozen throughout.  train.py applies an x0.2 LR milestone
+# at epoch 5, so the two stages use approximately 5e-4 and 1e-4 respectively.
+
+lr0: 0.0005
+lrf: 0.1
+momentum: 0.937
+weight_decay: 0.0005
+warmup_epochs: 0.5
+warmup_momentum: 0.8
+warmup_bias_lr: 0.0005
+
+box: 0.05
+cls: 0.5
+cls_pw: 1.0
+obj: 1.0
+obj_pw: 1.0
+iou_t: 0.2
+anchor_t: 4.0
+fl_gamma: 0.0
+
+hsv_h: 0.015
+hsv_s: 0.7
+hsv_v: 0.4
+degrees: 0.0
+translate: 0.1
+scale: 0.5
+shear: 0.0
+perspective: 0.0
+flipud: 0.0
+fliplr: 0.5
+mosaic: 1.0
+mixup: 0.0
+
+# Protocol marker and duration of the new-fusion-only stabilization stage.
+flir_lcafnet_to_rgca_staged_finetune: true
+flir_fusion_only_epochs: 5

@@ -1,0 +1,33 @@
+# Fine-tune the repaired channel/spatial prior model from exp_mask/best.pt.
+# Loaded parameters use 0.1 * lr0 through --differential-lr. Newly introduced
+# modules and priors use lr0, while loaded frequency scalars keep the lower LR.
+lr0: 0.001
+lrf: 0.10
+momentum: 0.937
+weight_decay: 0.0005
+warmup_epochs: 1.0
+warmup_momentum: 0.8
+warmup_bias_lr: 0.001
+
+box: 0.05
+cls: 0.5
+cls_pw: 1.0
+obj: 1.0
+obj_pw: 1.0
+iou_t: 0.20
+anchor_t: 4.0
+fl_gamma: 0.0
+
+# Weaker augmentation is intentional: exp_mask/best.pt is already converged.
+hsv_h: 0.010
+hsv_s: 0.50
+hsv_v: 0.30
+degrees: 0.0
+translate: 0.05
+scale: 0.30
+shear: 0.0
+perspective: 0.0
+flipud: 0.0
+fliplr: 0.5
+mosaic: 0.0
+mixup: 0.0

@@ -1,0 +1,16 @@
+# M3FD Overcast scene split from the WACV 2024 RGBXFusion metadata.
+# Unique aligned RGB/IR pairs: train=746, val=190, test=205.
+# The original local M3FD dataset is unchanged; these paths are symbolic links.
+
+path: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024
+
+train_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/overcast/train/vis
+val_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/overcast/val/vis
+test_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/overcast/test/vis
+
+train_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/overcast/train/Ir
+val_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/overcast/val/Ir
+test_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/overcast/test/Ir
+
+nc: 6
+names: ['People', 'Car', 'Bus', 'Lamp', 'Motorcycle', 'Truck']

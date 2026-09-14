@@ -1,0 +1,16 @@
+# M3FD Challenge scene split from the WACV 2024 RGBXFusion metadata.
+# Unique aligned RGB/IR pairs: train=484, val=122, test=156.
+# The original local M3FD dataset is unchanged; these paths are symbolic links.
+
+path: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024
+
+train_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/challenge/train/vis
+val_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/challenge/val/vis
+test_rgb: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/challenge/test/vis
+
+train_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/challenge/train/Ir
+val_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/challenge/val/Ir
+test_ir: /home/dell/lcp/dataset/M3FD_SceneSplit_WACV2024/images/challenge/test/Ir
+
+nc: 6
+names: ['People', 'Car', 'Bus', 'Lamp', 'Motorcycle', 'Truck']

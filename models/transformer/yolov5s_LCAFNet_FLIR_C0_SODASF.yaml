@@ -1,0 +1,109 @@
+# FLIR horizontal-box detector: C0 full dual RGB/IR LCAFNet with the
+# lightweight scale-sequence fusion used by SOD-YOLO ASF.  The established
+# P2-P5 RGCA/mask/GFB and PAN paths remain unchanged; only P2/P3 Detect inputs
+# receive residual multi-scale enrichment.
+nc: 3
+depth_multiple: 0.33
+width_multiple: 0.50
+architecture_variant: c0_full_dual_rgca_sod_asf
+
+pretrained_backbone_map:
+  0: 0
+  1: 1
+  2: 2
+  3: 3
+  4: 4
+  5: 5
+  6: 6
+  7: 7
+  8: 8
+  9: 9
+  10: 0
+  11: 1
+  12: 2
+  13: 3
+  14: 4
+  15: 5
+  16: 6
+  17: 7
+  18: 8
+  19: 9
+
+anchors:
+  - [5,6, 8,14, 15,11]                 # P2/4
+  - [10,13, 16,30, 33,23]              # P3/8
+  - [30,61, 62,45, 59,119]             # P4/16
+  - [116,90, 156,198, 373,326]         # P5/32
+
+backbone:
+  # Independent RGB branch, layers 0-9.
+  [[-1, 1, Conv, [64, 6, 2, 2]],
+   [-1, 1, Conv, [128, 3, 2]],
+   [-1, 3, C3, [128]],                  # 2: RGB P2/4
+   [-1, 1, Conv, [256, 3, 2]],
+   [-1, 6, C3, [256]],                  # 4: RGB P3/8
+   [-1, 1, Conv, [512, 3, 2]],
+   [-1, 9, C3, [512]],                  # 6: RGB P4/16
+   [-1, 1, Conv, [1024, 3, 2]],
+   [-1, 3, C3, [1024]],
+   [-1, 1, SPPF, [1024, 5]],            # 9: RGB P5/32
+
+   # Independent IR branch, layers 10-19.
+   [-4, 1, Conv, [64, 6, 2, 2]],
+   [-1, 1, Conv, [128, 3, 2]],
+   [-1, 3, C3, [128]],                  # 12: IR P2/4
+   [-1, 1, Conv, [256, 3, 2]],
+   [-1, 6, C3, [256]],                  # 14: IR P3/8
+   [-1, 1, Conv, [512, 3, 2]],
+   [-1, 9, C3, [512]],                  # 16: IR P4/16
+   [-1, 1, Conv, [1024, 3, 2]],
+   [-1, 3, C3, [1024]],
+   [-1, 1, SPPF, [1024, 5]],            # 19: IR P5/32
+
+   # C0 no-prior RGCA + foreground mask + GFB at all four scales.
+   [[2,12], 1, HAFFormerRGCAMaskGFB,
+    [128, 1.0, 2, 1.0, none, 0.5, 0.1, 0.01, legacy_channel]],
+   [[4,14], 1, HAFFormerRGCAMaskGFB,
+    [256, 1.0, 2, 1.0, none, 0.5, 0.1, 0.01, legacy_channel]],
+   [[6,16], 1, HAFFormerRGCAMaskGFB,
+    [512, 1.0, 2, 1.0, none, 0.5, 0.1, 0.01, legacy_channel]],
+   [[9,19], 1, HAFFormerRGCAMaskGFB,
+    [1024, 1.0, 2, 1.0, none, 0.5, 0.1, 0.01, legacy_channel]],
+  ]
+
+head:
+  [ [-1, 1, Conv, [512, 1, 1]],
+    [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+    [[-1, 22], 1, Concat, [1]],
+    [-1, 3, C3, [512, False]],           # 27
+
+    [-1, 1, Conv, [512, 1, 1]],
+    [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+    [[-1, 21], 1, Concat, [1]],
+    [-1, 3, C3, [512, False]],           # 31
+
+    [-1, 1, Conv, [256, 1, 1]],
+    [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+    [[-1, 20], 1, Concat, [1]],
+    [-1, 3, C3, [256, False]],           # 35: PAN P2/4
+
+    [-1, 1, Conv, [256, 3, 2]],
+    [[-1, 32], 1, Concat, [1]],
+    [-1, 3, C3, [256, False]],           # 38: PAN P3/8
+
+    [-1, 1, Conv, [256, 3, 2]],
+    [[-1, 28], 1, Concat, [1]],
+    [-1, 3, C3, [512, False]],           # 41: PAN P4/16
+
+    [-1, 1, Conv, [512, 3, 2]],
+    [[-1, 24], 1, Concat, [1]],
+    [-1, 3, C3, [1024, False]],          # 44: PAN P5/32
+
+    # SOD-YOLO ASF: enrich the two small-object prediction levels only.
+    [[21, 22, 23], 1, SODScaleSequenceFusion, [256]],  # 45: P3-scale context
+    [[38, 45], 1, SODResidualAdd, []],                 # 46: enhanced P3
+    [[20, 21, 22], 1, SODScaleSequenceFusion, [256]],  # 47: P2-scale context
+    [[35, 47], 1, SODResidualAdd, []],                 # 48: enhanced P2
+
+    [[48, 46, 41, 44], 1, Detect, [nc, anchors]],      # 49: HBB P2-P5
+  ]

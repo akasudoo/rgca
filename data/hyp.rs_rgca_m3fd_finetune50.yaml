@@ -1,0 +1,50 @@
+# RS-RGCA: reliability-supervised fine-tuning of the converged pure C0 RGCA.
+# The original detector forward path and all checkpoint tensors are retained.
+lr0: 0.0002
+lrf: 0.1
+momentum: 0.937
+weight_decay: 0.0005
+warmup_epochs: 1.0
+warmup_momentum: 0.8
+warmup_bias_lr: 0.0002
+box: 0.05
+cls: 0.5
+cls_pw: 1.0
+obj: 1.0
+obj_pw: 1.0
+iou_t: 0.2
+anchor_t: 4.0
+fl_gamma: 0.0
+hsv_h: 0.015
+hsv_s: 0.7
+hsv_v: 0.4
+degrees: 0.0
+translate: 0.1
+scale: 0.5
+shear: 0.0
+perspective: 0.0
+flipud: 0.0
+fliplr: 0.5
+mosaic: 1.0
+mixup: 0.0
+
+# Opt-in flag: a plain C0 RGCA run remains unchanged when this is false/absent.
+rs_reliability_supervision: true
+
+# Mild asymmetric curriculum. Independent probabilities leave approximately
+# 72% of samples free of these additional RS-RGCA corruptions.
+rs_reliability_corruption_probability: 0.25
+rs_reliability_pair_corruption_probability: 0.03
+rs_reliability_modality_dropout_probability: 0.01
+rs_reliability_max_shift_fraction: 0.04
+
+# Raw loss = calibration + ranking_gain * directional ranking. The complete
+# auxiliary term is kept small relative to the detector loss.
+rs_reliability_aux_gain: 0.02
+rs_reliability_ranking_gain: 0.25
+
+# Preserve the converged detector while first calibrating its existing gates.
+# The optimizer is constructed before staged freezing, so all parameters are
+# safely available when full-model fine-tuning begins at epoch 5.
+rs_gate_only_epochs: 5
+rs_reliability_gate_lr_ratio: 5.0

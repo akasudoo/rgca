@@ -1,0 +1,12 @@
+# DroneVehicle paired visible/infrared object-detection dataset.
+# YOLO class IDs follow the COCO category IDs after conversion to zero-based IDs.
+path: /home/dell/lcp/dataset/DroneVehicle
+train_rgb: /home/dell/lcp/dataset/DroneVehicle/images/vis_train
+val_rgb: /home/dell/lcp/dataset/DroneVehicle/images/vis_val
+test_rgb: /home/dell/lcp/dataset/DroneVehicle/images/vis_test
+train_ir: /home/dell/lcp/dataset/DroneVehicle/images/Ir_train
+val_ir: /home/dell/lcp/dataset/DroneVehicle/images/Ir_val
+test_ir: /home/dell/lcp/dataset/DroneVehicle/images/Ir_test
+
+nc: 5
+names: ['car', 'freight_car', 'truck', 'bus', 'van']

@@ -1,0 +1,9 @@
+# MFAD: 9,751 aligned RGB/IR training pairs and 2,443 test pairs.
+path: /home/dell/lcp/dataset/MFAD
+train_rgb: /home/dell/lcp/dataset/MFAD/visible/train
+val_rgb: /home/dell/lcp/dataset/MFAD/visible/test
+train_ir: /home/dell/lcp/dataset/MFAD/infrared/train
+val_ir: /home/dell/lcp/dataset/MFAD/infrared/test
+
+nc: 6
+names: ['Car', 'Bus', 'Truck', 'Pedestrian', 'EbikeRider', 'Cyclist']

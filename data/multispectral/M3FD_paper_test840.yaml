@@ -1,0 +1,19 @@
+# M3FD paper protocol: 3,360 training pairs and all 840 official test pairs.
+# The local dataset previously split the official test set into val/test halves.
+path: /home/dell/lcp/dataset/M3FD
+
+train_rgb: /home/dell/lcp/dataset/M3FD/images/vis_train
+train_ir: /home/dell/lcp/dataset/M3FD/images/Ir_train
+
+val_rgb: /home/dell/lcp/dataset/M3FD/images/vis_val
+val_ir: /home/dell/lcp/dataset/M3FD/images/Ir_val
+
+test_rgb:
+  - /home/dell/lcp/dataset/M3FD/images/vis_val
+  - /home/dell/lcp/dataset/M3FD/images/vis_test
+test_ir:
+  - /home/dell/lcp/dataset/M3FD/images/Ir_val
+  - /home/dell/lcp/dataset/M3FD/images/Ir_test
+
+nc: 6
+names: ['People', 'Car', 'Bus', 'Lamp', 'Motorcycle', 'Truck']

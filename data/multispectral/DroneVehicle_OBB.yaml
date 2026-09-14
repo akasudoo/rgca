@@ -1,0 +1,18 @@
+# DroneVehicle paper split with native four-point DOTA oriented annotations.
+# RGB annotations are the single shared ground truth for each registered pair;
+# IR annotations remain untouched and are available for modality-only studies.
+task: obb
+annotation_format: dota_poly
+target_annotation: rgb
+path: /home/dell/lcp/dataset/DroneVehicle
+val: /home/dell/lcp/dataset/DroneVehicle/raw/val/rgb/images
+
+train_rgb: /home/dell/lcp/dataset/DroneVehicle/raw/train/rgb/images
+train_ir: /home/dell/lcp/dataset/DroneVehicle/raw/train/ir/images
+val_rgb: /home/dell/lcp/dataset/DroneVehicle/raw/val/rgb/images
+val_ir: /home/dell/lcp/dataset/DroneVehicle/raw/val/ir/images
+test_rgb: /home/dell/lcp/dataset/DroneVehicle/raw/test/rgb/images
+test_ir: /home/dell/lcp/dataset/DroneVehicle/raw/test/ir/images
+
+nc: 5
+names: ['car', 'truck', 'freight_car', 'bus', 'van']

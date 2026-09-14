@@ -1,0 +1,14 @@
+# Compatibility metadata for the historical exp_m3fd_vis_single checkpoint.
+# Image paths and numeric YOLO labels are exactly the canonical M3FD test set;
+# only the displayed class names reproduce the order embedded in best.pt.
+
+path: /home/dell/lcp/dataset/M3FD
+train_rgb: /home/dell/lcp/dataset/M3FD/images/vis_train
+val_rgb: /home/dell/lcp/dataset/M3FD/images/vis_val
+test_rgb: /home/dell/lcp/dataset/M3FD/images/vis_test
+train_ir: /home/dell/lcp/dataset/M3FD/images/Ir_train
+val_ir: /home/dell/lcp/dataset/M3FD/images/Ir_val
+test_ir: /home/dell/lcp/dataset/M3FD/images/Ir_test
+
+nc: 6
+names: ['People', 'Car', 'Bus', 'Motorcycle', 'Lamp', 'Truck']
