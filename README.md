@@ -1,5 +1,3 @@
-# Lightweight modal-guided cross-attention fusion network for visible-infrared object detection
-This is an official PyTorch implementation for our LCAFNet. Paper can be download in [LCAFNet](https://www.sciencedirect.com/science/article/pii/S0031320326003158)
 
 ### 1. Dependences
  Create a conda virtual environment and activate it.
@@ -40,20 +38,4 @@ its exact treatment to `EXPERIMENT_IDENTITY.md`.
 python test.py
 ```
 
-### 6. Citation
-If you find LCAFNet helpful for your research, please consider citing our work.
-```BibTex
-@article{Wu2026,
-  author       = {Wencong Wu and
-                  Hongxi Zhang and
-                  Xiuwei Zhang and
-                  Hanlin Yin and
-                  Yanning Zhang},
-  title        = {Lightweight modal-guided cross-attention fusion network for visible-infrared
-                  object detection},
-  journal      = {Pattern Recognition},
-  volume       = {177},
-  pages        = {113350},
-  year         = {2026}
-}
-```
+
